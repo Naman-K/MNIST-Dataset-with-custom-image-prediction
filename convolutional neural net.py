@@ -3,6 +3,7 @@ Author : NamanK
 '''
 
 import keras
+import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.utils import to_categorical
@@ -30,19 +31,15 @@ def convolutional_model():
     model = Sequential()
     model.add(Conv2D(16, (5, 5), activation='relu', input_shape=(28, 28, 1)))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-    
     model.add(Conv2D(8, (2, 2), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2))) #Change the number of layers
-    
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2))) 
     model.add(Flatten())
     model.add(Dense(100, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
-
     model.compile(optimizer='adam', loss='categorical_crossentropy',  metrics=['accuracy'])
     return model
 
 model = convolutional_model()
-
 model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=200, verbose=2)
 
 scores = model.evaluate(X_test, y_test, verbose=0)
